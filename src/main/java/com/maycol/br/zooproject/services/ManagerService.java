@@ -31,4 +31,12 @@ public class ManagerService {
     Manager entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity nor found"));
     return new ManagerDTO(entity);
   }
+
+  @Transactional
+  public ManagerDTO insert(ManagerDTO dto) {
+    Manager entity = new Manager();
+    entity.setName(dto.getName());
+    entity = repository.save(entity);
+    return new ManagerDTO(entity);
+  }
 }
