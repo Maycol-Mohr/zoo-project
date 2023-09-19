@@ -3,8 +3,11 @@ package com.maycol.br.zooproject.services;
 import com.maycol.br.zooproject.dto.ManagerDTO;
 import com.maycol.br.zooproject.entities.Manager;
 import com.maycol.br.zooproject.repositories.ManagerRepository;
+import com.maycol.br.zooproject.services.exceptions.DatabaseException;
 import com.maycol.br.zooproject.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +51,18 @@ public class ManagerService {
       entity = repository.save(entity);
       return new ManagerDTO(entity);
     } catch (EntityNotFoundException e) {
-      throw new ResourceNotFoundException("id not found" + id);
+      throw new ResourceNotFoundException("id not found " + id);
+    }
+  }
+
+  public void delete(Long id) {
+    try {
+      repository.deleteById(id);
+    } catch (EmptyResultDataAccessException e) {
+      throw new ResourceNotFoundException("id not found " + id);
+    }
+    catch (DataIntegrityViolationException e) {
+      throw new DatabaseException("Integrity Violation");
     }
   }
 }
