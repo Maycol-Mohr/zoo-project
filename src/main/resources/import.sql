@@ -1,3 +1,3 @@
-INSERT INTO tb_manager(name) VALUES ('Michael');
-INSERT INTO tb_manager(name) VALUES ('Fred');
-INSERT INTO tb_manager(name) VALUES ('Peter');
+INSERT INTO tb_manager(name, created_At) VALUES ('Michael', NOW());
+INSERT INTO tb_manager(name, created_At) VALUES ('Fred', NOW());
+INSERT INTO tb_manager(name, created_At) VALUES ('Peter', NOW());
