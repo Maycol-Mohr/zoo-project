@@ -38,4 +38,10 @@ public class ManagerResource {
             .buildAndExpand(dto.getId()).toUri();
     return ResponseEntity.created(uri).body(dto);
   }
+
+  @PutMapping(value = "/{id}")
+  public ResponseEntity<ManagerDTO> update(@PathVariable Long id, @RequestBody ManagerDTO dto) {
+    dto = service.update(id, dto);
+    return ResponseEntity.ok().body(dto);
+  }
 }
