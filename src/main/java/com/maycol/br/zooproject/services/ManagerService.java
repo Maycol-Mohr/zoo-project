@@ -8,6 +8,8 @@ import com.maycol.br.zooproject.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +25,9 @@ public class ManagerService {
   private ManagerRepository repository;
 
   @Transactional(readOnly = true)
-  public List<ManagerDTO> findAll() {
-    List<Manager> list = repository.findAll();
-    return list.stream().map(x -> new ManagerDTO(x)).collect(Collectors.toList());
+  public Page<ManagerDTO> findAllPaged(PageRequest pageRequest) {
+    Page<Manager> list = repository.findAll(pageRequest);
+    return list.map(x -> new ManagerDTO(x));
   }
 
   @Transactional(readOnly = true)
