@@ -2,29 +2,33 @@ package com.maycol.br.zooproject.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "tb_manager")
-public class Manager implements Serializable {
+@Table(name = "tb_caretaker")
+public class Caretaker implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
 
-  @OneToMany(mappedBy = "manager")
-  private List<Caretaker> caretakers = new ArrayList<>();
+  @ManyToOne
+  @JoinColumn(name = "manager_id")
+  private Manager manager;
 
-  public Manager() {
+  @ManyToMany(mappedBy = "caretakers")
+  private Set<Animal> animals;
+
+  public Caretaker() {
   }
 
-  public Manager(Long id, String name, List<Caretaker> caretakers) {
+  public Caretaker(Long id, String name, Manager manager) {
     this.id = id;
     this.name = name;
-    this.caretakers = caretakers;
+    this.manager = manager;
   }
 
   public Long getId() {
@@ -43,15 +47,23 @@ public class Manager implements Serializable {
     this.name = name;
   }
 
-  public List<Caretaker> getCaretakers() {
-    return caretakers;
+  public Manager getManager() {
+    return manager;
+  }
+
+  public void setManager(Manager manager) {
+    this.manager = manager;
+  }
+
+  public Set<Animal> getAnimals() {
+    return animals;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Manager manager = (Manager) o;
+    Caretaker manager = (Caretaker) o;
     return id.equals(manager.id);
   }
 
